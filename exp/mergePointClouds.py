@@ -1,12 +1,14 @@
+# 点云合并
+
 import numpy as np
 import open3d as o3d
 import os
 from glob import glob
 
-# 设置数据目录
+# TODO：设置数据目录
 lidar_dir = "/home/zmh/Codes/nuscenesData/000/lidar"  # LiDAR 点云文件目录
 pose_dir = "/home/zmh/Codes/nuscenesData/000/lidar_pose"  # 车辆姿态目录
-output_ply = "merged_downsampled.ply"  # 输出文件
+output_ply = "./data/points3D.ply"  # 输出文件
 voxel_size = 0.1  # 体素大小
 
 # 读取所有 .bin 和 .txt 文件，确保按顺序匹配
