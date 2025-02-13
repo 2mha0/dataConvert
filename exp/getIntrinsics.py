@@ -1,15 +1,13 @@
 # 生成相机内参：intrinsics目录转换为cameras.txt文件
 import numpy as np
 import os
-from decimal import Decimal
 from PIL import Image
 import re
 
-def get_file_paths_in_directory(directory):
-    # 获取指定路径下的所有文件的完整路径（不包括子目录）
-    file_paths = [os.path.join(directory, f) for f in os.listdir(directory) if os.path.isfile(os.path.join(directory, f))]
-    file_paths = sorted(file_paths)
-    return file_paths
+import sys
+# 将当前路径添加到 sys.path
+sys.path.append("/home/zmh/Codes/dataConvert")
+from utils import get_file_paths_in_directory
 
 # TODO
 output_file = "/home/zmh/Codes/dataConvert/exp/data/cameras.txt"
