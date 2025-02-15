@@ -18,9 +18,6 @@ extrinsics_name = get_file_paths_in_directory(extrinsics_dir)
 lines = [] # 记录数据
 for idx, extrinsics_file in enumerate(extrinsics_name, start=1):
     print("------  读取外参文件：" + str(extrinsics_file) + "  ---------")
-    # extrinsics_matrix = np.loadtxt(extrinsics_file, dtype=Decimal)  # 高精度读取
-    # # 提取 3×3 旋转矩阵
-    # R = np.array(extrinsics_matrix[:3, :3], dtype=Decimal)  # 保留高精度
     extrinsics_matrix = np.loadtxt(extrinsics_file, dtype=str) 
     extrinsics_matrix = np.array([[Decimal(value) for value in row] for row in extrinsics_matrix], dtype=object) 
     R = extrinsics_matrix[:3, :3]
