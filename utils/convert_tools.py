@@ -26,10 +26,17 @@ def getExtrinsics_all(input_file, output_file):
     extrinsics_name = get_file_paths_in_directory(extrinsics_dir)
     lines = [] # 记录数据
     for idx, extrinsics_file in enumerate(extrinsics_name, start=1):
-        print("------  读取外参文件：" + str(extrinsics_file) + "  ---------")
-        extrinsics_matrix = np.loadtxt(extrinsics_file, dtype=str) 
-        extrinsics_matrix = np.array([[Decimal(value) for value in row] for row in extrinsics_matrix], dtype=object) 
-        R = extrinsics_matrix[:3, :3]
+        # print("------  读取外参文件：" + str(extrinsics_file) + "  ---------")
+        # 读取外参矩阵
+        extrinsics_matrix_str = np.loadtxt(extrinsics_file, dtype=str)
+        # 将字符串转换为 Decimal 数值类型
+        extrinsics_matrix = np.array([[Decimal(value) for value in row] for row in extrinsics_matrix_str], dtype=object).astype(float)
+
+        # 这里需要计算 extrinsics_matrix 的逆矩阵
+        extrinsics_matrix_inv = np.linalg.inv(extrinsics_matrix)
+
+        # 提取逆矩阵中的旋转部分
+        R = extrinsics_matrix_inv[:3, :3]
         # 计算四元数
         quaternion = rotation_matrix_to_quaternion(R)
 
@@ -39,7 +46,7 @@ def getExtrinsics_all(input_file, output_file):
         # print(quaternion)
 
         # 提取平移向量 (最后一列的前三行)
-        T = extrinsics_matrix[:3, 3]
+        T = extrinsics_matrix_inv[:3, 3]
         T = [float(t) for t in T]
         # print("平移向量:")
         # print(T)
@@ -178,15 +185,22 @@ def getExtrinsics_by_index(input_file, output_file, index):
         files = get_files_by_camera_index(extrinsics_dir, cameraIndex)
         for extrinsics_file in files:
             # print(extrinsics_file)
-            extrinsics_matrix = np.loadtxt(extrinsics_file, dtype=str) 
-            extrinsics_matrix = np.array([[Decimal(value) for value in row] for row in extrinsics_matrix], dtype=object) 
-            R = extrinsics_matrix[:3, :3]
+            # 读取外参矩阵
+            extrinsics_matrix_str = np.loadtxt(extrinsics_file, dtype=str)
+            # 将字符串转换为 Decimal 数值类型
+            extrinsics_matrix = np.array([[Decimal(value) for value in row] for row in extrinsics_matrix_str], dtype=object).astype(float)
+
+            # 计算 extrinsics_matrix 的逆矩阵
+            extrinsics_matrix_inv = np.linalg.inv(extrinsics_matrix)
+
+            # 提取逆矩阵中的旋转部分
+            R = extrinsics_matrix_inv[:3, :3]
             # 计算四元数
             quaternion = rotation_matrix_to_quaternion(R)
             quaternion = [float(q) for q in quaternion]
 
             # 提取平移向量 (最后一列的前三行)
-            T = extrinsics_matrix[:3, 3]
+            T = extrinsics_matrix_inv[:3, 3]
             T = [float(t) for t in T]
 
             filename = os.path.basename(extrinsics_file)
@@ -235,7 +249,7 @@ def getIntrinsics_by_index(input_file, output_file, index):
             # print(extrinsics_file)
             filename = os.path.basename(extrinsics_file)
             filename_wo_ext = os.path.splitext(filename)[0]
-            print(filename_wo_ext)
+            # print(filename_wo_ext)
 
             # 使用正则表达式来匹配 "_" 后面的数字
             pattern = r'_(\d+)'
@@ -256,33 +270,3 @@ def getIntrinsics_by_index(input_file, output_file, index):
         f.write("\n".join(lines))
 
     print(f"{index}摄像头的相机内参数据已写入 {output_file}")
-
-
-
-
-    # # 使用外参的文件名来遍历循环：
-    # extrinsics_name = get_file_paths_in_directory(extrinsics_dir)
-    # for idx, extrinsics_file in enumerate(extrinsics_name, start=1):
-    #     filename = os.path.basename(extrinsics_file)
-    #     filename_wo_ext = os.path.splitext(filename)[0]
-    #     # print(filename_wo_ext) # "190_0", "190_1", "190_2"等
-
-    #     # 使用正则表达式来匹配 "_" 后面的数字
-    #     pattern = r'_(\d+)'
-    #     numbers = re.search(pattern, filename_wo_ext).group(1)
-    #     # 通过后面的数字来确实是哪个摄像头，从而知道这一行使用哪一个内参文件
-    #     _intrinsics = intrinsics[int(numbers)] # 文件命名是从0开始
-
-    #     img_path = img_dir + '/' + filename_wo_ext + '.jpg'
-    #     img = Image.open(img_path)
-    #     # 获取图片分辨率 (宽度, 高度)
-    #     width, height = img.size
-
-    #     line = f"{idx} {'PINHOLE'} {width} {height} {' '.join(map(str, _intrinsics))}"
-    #     lines.append(line)
-
-    # # 将所有数据写入 images.txt
-    # with open(output_file, "w") as f:
-    #     f.write("\n".join(lines))
-
-    # print(f"所有摄像头的相机内参数据已写入 {output_file}")

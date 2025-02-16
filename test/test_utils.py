@@ -11,7 +11,7 @@ if __name__ == "__main__":
     # getExtrinsics_all(dataPath, imagesPath)
     # getIntrinsics_all(dataPath, camerasPath)
     # mergePointClouds(dataPath, pointsPath)
-    index = '0、1、2、3'
+    index = '0'
     getExtrinsics_by_index(dataPath, imagesPath, index)
     getIntrinsics_by_index(dataPath, camerasPath, index)
-
+    mergePointClouds(dataPath, pointsPath)
