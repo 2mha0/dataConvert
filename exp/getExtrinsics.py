@@ -18,9 +18,13 @@ extrinsics_name = get_file_paths_in_directory(extrinsics_dir)
 lines = [] # 记录数据
 for idx, extrinsics_file in enumerate(extrinsics_name, start=1):
     print("------  读取外参文件：" + str(extrinsics_file) + "  ---------")
-    extrinsics_matrix = np.loadtxt(extrinsics_file, dtype=str) 
-    extrinsics_matrix = np.array([[Decimal(value) for value in row] for row in extrinsics_matrix], dtype=object) 
-    R = extrinsics_matrix[:3, :3]
+    extrinsics_matrix_str = np.loadtxt(extrinsics_file, dtype=str)
+    # 将字符串转换为 Decimal 数值类型
+    extrinsics_matrix = np.array([[Decimal(value) for value in row] for row in extrinsics_matrix_str], dtype=object).astype(float)
+
+    # 这里需要计算 extrinsics_matrix 的逆矩阵
+    extrinsics_matrix_inv = np.linalg.inv(extrinsics_matrix)
+    R = extrinsics_matrix_inv[:3, :3]
     # 计算四元数
     quaternion = rotation_matrix_to_quaternion(R)
 
@@ -30,7 +34,7 @@ for idx, extrinsics_file in enumerate(extrinsics_name, start=1):
     print(quaternion)
 
     # 提取平移向量 (最后一列的前三行)
-    T = extrinsics_matrix[:3, 3]
+    T = extrinsics_matrix_inv[:3, 3]
     T = [float(t) for t in T]
     print("平移向量:")
     print(T)
