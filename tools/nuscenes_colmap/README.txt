@@ -1,0 +1,1 @@
+nuscenes数据集转换为原始3DGS格式（也就是colmap格式）

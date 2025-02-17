@@ -12,6 +12,21 @@ def get_file_paths_in_directory(directory):
     file_paths = sorted(file_paths)
     return file_paths
 
+def get_sorted_directories(base_path):
+    # 获取指定路径下所有的目录名(不包括子目录)
+    if not os.path.exists(base_path):
+        raise ValueError(f"The path {base_path} does not exist.")
+    if not os.path.isdir(base_path):
+        raise ValueError(f"The path {base_path} is not a directory.")
+
+    # 获取所有目录名
+    directories = [d for d in os.listdir(base_path) if os.path.isdir(os.path.join(base_path, d))]
+    
+    # 对目录名进行排序
+    directories.sort()
+
+    return directories
+
 def get_files_by_camera_index(directory, camera_index):
     """获取指定相机索引的所有txt文件。
     
