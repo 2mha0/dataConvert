@@ -26,6 +26,7 @@ OPENCV2DATASET = np.array(
     [[0, 0, 1, 0], [-1, 0, 0, 0], [0, -1, 0, 0], [0, 0, 0, 1]]
 )
 
+# extrinsics/0.txt
 cam_to_ego = np.array([
     [ 9.998362731902032952e-01, -6.126490657911932460e-03, 1.702624225551873857e-02, 1.538666713905354921e+00],
     [ 6.212629204228849004e-03, 9.999681466335748059e-01, -5.010883812664571751e-03, -2.493885762968131928e-02],
@@ -40,7 +41,7 @@ ego_pose_dir = '/home/zmh/data/waymo/processed/training/023/ego_pose'
 ego_pose_name = get_file_paths_in_directory(ego_pose_dir)
 index = '0'
 lines = [] # 记录数据
-ego_to_world_start = ego_pose_matrix_str = np.loadtxt('/home/zmh/data/waymo/processed/training/023/ego_pose/000.txt', dtype=str)
+ego_to_world_start = np.loadtxt('/home/zmh/data/waymo/processed/training/023/ego_pose/000.txt', dtype=str)
 ego_to_world_start = np.array([[Decimal(value) for value in row] for row in ego_to_world_start], dtype=object).astype(float)
 for idx, ego_pose_file in enumerate(ego_pose_name, start=1):
     # print("------  读取外参文件：" + str(ego_pose_file) + "  ---------")

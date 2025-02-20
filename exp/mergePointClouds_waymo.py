@@ -2,10 +2,9 @@ import os
 import numpy as np
 import torch
 from tqdm import trange
-# from omegaconf import OmegaConf
 import open3d as o3d
 
-class PointCloudMerger:
+class WaymoPointCloudMerger:
     def __init__(
         self,
         data_path: str,
@@ -90,7 +89,7 @@ class PointCloudMerger:
 
         return all_points
 
-    def save_point_cloud(self, points, filename="merged_pointcloud.ply"):
+    def save_point_cloud(self, points, filename="points3D.ply"):
         """
         Save the merged point cloud to a .ply file.
         """
@@ -99,7 +98,11 @@ class PointCloudMerger:
         o3d.io.write_point_cloud(filename, pcd)
         print(f"Point cloud saved to {filename}")
 
-    def merge_and_downsample(self, voxel_size: float = 0.1):
+    def merge_and_downsample(
+            self,
+            voxel_size: float = 0.1,
+            save_path: str = '/home/zmh/Codes/dataConvert/test/data/points3D.ply'
+        ):
         """
         Merge all point clouds and perform voxel downsampling.
         """
@@ -113,13 +116,14 @@ class PointCloudMerger:
         pcd_downsampled = pcd.voxel_down_sample(voxel_size)
 
         # Save the downsampled point cloud
-        self.save_point_cloud(np.asarray(pcd_downsampled.points), filename="points3D.ply")
+        self.save_point_cloud(np.asarray(pcd_downsampled.points), filename = save_path)
         print(f"Downsampled point cloud saved.")
 # 配置文件路径、时间步长范围等
 data_path = "/home/zmh/data/waymo/processed/training/023"
 start_timestep = 0
 end_timestep = 198  # 根据你的需要选择合适的范围
+save_path = '/home/zmh/Codes/dataConvert/test/data/points3D.ply'
 
 # 创建并合并点云
-merger = PointCloudMerger(data_path, start_timestep, end_timestep)
-merger.merge_and_downsample(voxel_size=0.1)
+merger = WaymoPointCloudMerger(data_path, start_timestep, end_timestep)
+merger.merge_and_downsample(voxel_size=0.1, save_path = save_path)
