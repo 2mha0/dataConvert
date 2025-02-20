@@ -35,7 +35,7 @@ for idx, img_file in enumerate(img_name, start=1):
     # 使用正则表达式来匹配 "_" 后面的数字
     pattern = r'_(\d+)'
     numbers = re.search(pattern, filename_wo_ext).group(1)
-    if numbers == '0':
+    if numbers == index:
         # 通过后面的数字来确定是哪个摄像头，从而知道这一行使用哪一个内参文件
         _intrinsics = intrinsics[int(numbers)] # 文件命名是从0开始
 

@@ -1,6 +1,8 @@
 # dataConvert
 drivestudio中的数据转换为原始的3DGS数据格式
 
+转换工具在dataConvert/tools目录下，包括两个转换脚本waymoConvert.py和nuscenesConvert.py
+在dataConvert/tools目录下也包括转好的点云以及内外参文件
 **drivestudio中Nuscenes数据格式**：
 
 ```shell
@@ -28,6 +30,7 @@ nuscenesData/
 ```
 
 **drivestudio中Waymo数据格式**：
+waymo数据集转换示例：`python waymoConvert.py /home/zmh/data/waymo/processed/training /home/zmh/Codes/dataConvert/tools/waymo_colmap 0、1`
 
 ```shell
 waymo/
