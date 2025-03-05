@@ -1,2 +1,0 @@
-waymo数据集转换为原始3DGS格式（也就是colmap格式）
-图片直接从drivestudio转换好的对应场景的images目录复制即可
