@@ -1,2 +1,0 @@
-nuscenes数据集转换为原始3DGS格式（也就是colmap格式）
-但可能是由于drivestudio的插值，转换到colmap格式再使用原始3dgs跑效果很差
