@@ -69,27 +69,30 @@ waymo/
 
 ```shell
 dataConvert/
-├── exp         			 # 实验
-│   ├── data				 # 生成数据
-│   │   ├── cameras.txt		  # 相机内参
-│   │   ├── images.txt		  # 相机外参
-│   │   └── points3D.ply	  # 点云
-│   ├── getExtrinsics.py	  # 实验：生成相机外参，extrinsics目录转换为images.txt文件
-│   ├── getIntrinsics.py	  # 实验：生成相机内参，intrinsics目录转换为cameras.txt文件
-│   ├── mergePointClouds.py	   # 实验：合并点云 
-│   └── test.py				  # 实验：4*4的变换矩阵得到images.txt文件
+├── exp    # 实验
+│   ├── data    # 实验生成的数据
+│   ├── getExtrinsics_nuscenes.py    # nuscenes和waymo在drivestudio不同，需要分别处理
+│   ├── getExtrinsics_waymo.py
+│   ├── getIntrinsics_nuscenes.py
+│   ├── getIntrinsics_waymo.py
+│   ├── merged_downsampled.ply
+│   ├── mergePointClouds_nuscenes.py
+│   ├── mergePointClouds_waymo.py
+│   └── test.py
 ├── README.md
-├── test					 # 测试
-│   ├── data
-│   │   ├── cameras.txt		  # 测试结果，生成的相机内参
-│   │   ├── images.txt		  # 测试结果，生成的相机外参
-│   │   └── points3D.ply	  # 测试结果，生成的点云
-│   └── test_utils.py		  # 单元测试
-└── utils					 # 一些工具程序
-    ├── convert_tools.py	   # 数据转换工具
-    ├── file_utils.py		   # 系统文件操作工具
+├── test    # 测试
+│   ├── data
+│   ├── nuscenes_test.py
+│   └── waymo_test.py
+├── tools    # 主要的转换工具
+│   ├── nuscenesConvert.py    # nuscenes转换工具
+│   └── waymoConvert.py       # waymo转换工具
+└── utils
+    ├── file_utils.py         # 系统文件操作工局
     ├── __init__.py
-    └── transform.py
+    ├── nuscenes_convert_tools.py    # nuscenes转换函数
+    ├── transform.py                 # 转换脚本
+    └── waymo_convert_tools.py       # waymo转换函数
 ```
 
 
